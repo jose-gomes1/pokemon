@@ -71,66 +71,101 @@
         <div class="cards" id="cards-container"></div>
     </div>
 
-    <script>
-        async function openBooster() {
-            const container = document.getElementById('cards-container');
-            container.innerHTML = '';
+<script>
+    async function openBooster() {
+        const container = document.getElementById('cards-container');
+        container.innerHTML = '';
+        
+        const numCards = 5; // Número de cartas no booster
+        const maxCardIdPrismaticEvolutions = 180; // Máximo ID de carta da coleção Prismatic Evolutions
+        const maxCardIdSurgingSparks = 252; // Máximo ID de carta da coleção Surging Sparks
+        const maxCardIdStellarCrown = 175; // Máximo ID de carta da coleção Stellar Crown
+        const maxCardIdShroudedFable = 99; // Máximo ID de carta da coleção Shrouded Fable
+        const maxCardIdTwilightMasquerade = 226; // Máximo ID de carta da coleção Twilight Masquerade
+        const maxCardIdTemporalForces = 218; // Máximo ID de carta da coleção Temporal Forces
+        const maxCardIdPaldeanFates = 239; // Máximo ID de carta da coleção Paldean Fates
+        const maxCardIdParadoxRift = 259; // Máximo ID de carta da coleção Paradox Rift
+        const maxCardId151 = 204;
+        const maxCardId151 = 204; // Máximo ID de carta da coleção 151
+        const maxCardIdObsidianFlames = 227; // Máximo ID de carta da coleção Obsidian Flames
+        const maxCardIdPaldeaEvolved = 270; // Máximo ID de carta da coleção Paldea Evolved
+        const maxCardIdScarletViolet = 252; // Máximo ID de carta da coleção Scarlet Violet
+
+        for (let i = 0; i < numCards; i++) {
+            let cardDiv = document.createElement('div');
+            cardDiv.classList.add('card');
+            cardDiv.onclick = () => cardDiv.classList.toggle('flipped');
             
-            const numCards = 5; // Número de cartas no booster
-            const maxCardIdPrismaticEvolutions = 180; // Máximo ID de carta da coleção Prismatic Evolutions
-            const maxCardIdSurgingSparks = 252; // Máximo ID de carta da coleção Surging Sparks
-            const maxCardIdStellarCrown = 175; // Máximo ID de carta da coleção Stellar Crown
-    
-            for (let i = 0; i < numCards; i++) {
-                let cardDiv = document.createElement('div');
-                cardDiv.classList.add('card');
-                cardDiv.onclick = () => cardDiv.classList.toggle('flipped');
-                
-                let cardInner = document.createElement('div');
-                cardInner.classList.add('card-inner');
-                
-                // Card front
-                let cardFront = document.createElement('div');
-                cardFront.classList.add('card-front');  // Add the class for the front side
-                let imgFront = document.createElement('img');
-                imgFront.src = `https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Pokemon_Trading_Card_Game_cardback.jpg/150px-Pokemon_Trading_Card_Game_cardback.jpg`;
-                imgFront.alt = "Pokémon Card Front";
-                cardFront.appendChild(imgFront);
-    
-                // Card back
-                let cardBack = document.createElement('div');
-                cardBack.classList.add('card-back');
-                let imgBack = document.createElement('img');
-    
-                // Randomly choose between the three collections
-                const collectionChoice = Math.random();
-                let imgUrl;
-                if (collectionChoice < 0.33) {
-                    // Prismatic Evolutions Collection
-                    const cardIdPrismatic = Math.floor(Math.random() * maxCardIdPrismaticEvolutions) + 1;
-                    imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/prismatic-evolutions/en-us/SV8pt5_EN_${cardIdPrismatic}.png`;
-                } else if (collectionChoice < 0.66) {
-                    // Surging Sparks Collection
-                    const cardIdSurgingSparks = Math.floor(Math.random() * maxCardIdSurgingSparks) + 1;
-                    imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/surging-sparks/en-us/SV08_EN_${cardIdSurgingSparks}.png`;
-                } else {
-                    // Stellar Crown Collection
-                    const cardIdStellarCrown = Math.floor(Math.random() * maxCardIdStellarCrown) + 1;
-                    imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/stellar-crown/en-us/SV07_EN_${cardIdStellarCrown}.png`;
-                }
-    
-                imgBack.src = imgUrl;
-                imgBack.alt = "Pokémon Card Back";
-                cardBack.appendChild(imgBack);
-                
-                // Add the front and back to the card
-                cardInner.appendChild(cardFront);
-                cardInner.appendChild(cardBack);
-                cardDiv.appendChild(cardInner);
-                container.appendChild(cardDiv);
+            let cardInner = document.createElement('div');
+            cardInner.classList.add('card-inner');
+            
+            // Card front
+            let cardFront = document.createElement('div');
+            cardFront.classList.add('card-front');
+            let imgFront = document.createElement('img');
+            imgFront.src = `https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Pokemon_Trading_Card_Game_cardback.jpg/150px-Pokemon_Trading_Card_Game_cardback.jpg`;
+            imgFront.alt = "Pokémon Card Front";
+            cardFront.appendChild(imgFront);
+
+            // Card back
+            let cardBack = document.createElement('div');
+            cardBack.classList.add('card-back');
+            let imgBack = document.createElement('img');
+
+            // Randomly choose between the 12 collections
+            const collectionChoice = Math.random();
+            let imgUrl;
+            if (collectionChoice < 1 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdPrismaticEvolutions) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/prismatic-evolutions/en-us/SV8pt5_EN_${cardId}.png`;
+            } else if (collectionChoice < 2 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdSurgingSparks) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/surging-sparks/en-us/SV08_EN_${cardId}.png`;
+            } else if (collectionChoice < 3 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdStellarCrown) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/stellar-crown/en-us/SV07_EN_${cardId}.png`;
+            } else if (collectionChoice < 4 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdShroudedFable) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/shrouded-fable/en-us/SV6pt5_EN_${cardId}.png`;
+            } else if (collectionChoice < 5 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdTwilightMasquerade) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/twilight-masquerade/en-us/SV06_EN_${cardId}.png`;
+            } else if (collectionChoice < 6 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdTemporalForces) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/temporal-forces/en-us/SV05_EN_${cardId}.png`;
+            } else if (collectionChoice < 7 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdPaldeanFates) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/paldean-fates/en-us/SV4pt5_EN_${cardId}.png`;
+            } else if (collectionChoice < 8 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdParadoxRift) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/paradox-rift/en-us/SV04_EN_${cardId}.png`;
+            } else if (collectionChoice < 9 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardId151) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/151/en-us/SV3pt5_EN_${cardId}.png`;
+            } else if (collectionChoice < 10 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdObsidianFlames) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/obsidian-flames/en-us/SV03_EN_${cardId}.png`;
+            } else if (collectionChoice < 11 / 12) {
+                const cardId = Math.floor(Math.random() * maxCardIdPaldeaEvolved) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/paldea-evolved/en-us/SV02_EN_${cardId}.png`;
+            } else {
+                const cardId = Math.floor(Math.random() * maxCardIdScarletViolet) + 1;
+                imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/scarlet-violet/en-us/SV01_EN_${cardId}.png`;
             }
+
+            imgBack.src = imgUrl;
+            imgBack.alt = "Pokémon Card Back";
+            cardBack.appendChild(imgBack);
+            
+            // Add the front and back to the card
+            cardInner.appendChild(cardFront);
+            cardInner.appendChild(cardBack);
+            cardDiv.appendChild(cardInner);
+            container.appendChild(cardDiv);
         }
-    </script>
+    }
+</script>
+
     
 </body>
 </html>
