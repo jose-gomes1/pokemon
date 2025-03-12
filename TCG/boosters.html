@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Booster Pack</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; } /* Optional: Reset margin and padding */
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #222; /* Black background */
+            color: #fff; /* White text */
+        }
+        .booster-pack { 
+            margin: 20px; 
+            padding: 20px; 
+            border-radius: 10px; 
+            background-color: #222; /* Slightly darker background for the booster pack */
+        }
+        .cards { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            margin-top: 20px; 
+        }
+        .card { 
+            margin: 10px; 
+            width: 150px; 
+            height: 210px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            perspective: 1000px; 
+            cursor: pointer;
+            background-color: #222;
+        }
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+        .card-back img, .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #0099ff; border: none; border-radius: 5px; color: white; }
+    </style>
+</head>
+<body>
+    <div class="booster-pack">
+        <h1>Abrir Booster Pack</h1>
+        <button onclick="openBooster()">Abrir Pacote</button>
+        <div class="cards" id="cards-container"></div>
+    </div>
+
+    <script>
+        async function openBooster() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            
+            const numCards = 5; // Número de cartas no booster
+            const maxCardIdPrismaticEvolutions = 180; // Máximo ID de carta da coleção Prismatic Evolutions
+            const maxCardIdSurgingSparks = 252; // Máximo ID de carta da coleção Surging Sparks
+            const maxCardIdStellarCrown = 175; // Máximo ID de carta da coleção Stellar Crown
+    
+            for (let i = 0; i < numCards; i++) {
+                let cardDiv = document.createElement('div');
+                cardDiv.classList.add('card');
+                cardDiv.onclick = () => cardDiv.classList.toggle('flipped');
+                
+                let cardInner = document.createElement('div');
+                cardInner.classList.add('card-inner');
+                
+                // Card front
+                let cardFront = document.createElement('div');
+                cardFront.classList.add('card-front');  // Add the class for the front side
+                let imgFront = document.createElement('img');
+                imgFront.src = `https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Pokemon_Trading_Card_Game_cardback.jpg/150px-Pokemon_Trading_Card_Game_cardback.jpg`;
+                imgFront.alt = "Pokémon Card Front";
+                cardFront.appendChild(imgFront);
+    
+                // Card back
+                let cardBack = document.createElement('div');
+                cardBack.classList.add('card-back');
+                let imgBack = document.createElement('img');
+    
+                // Randomly choose between the three collections
+                const collectionChoice = Math.random();
+                let imgUrl;
+                if (collectionChoice < 0.33) {
+                    // Prismatic Evolutions Collection
+                    const cardIdPrismatic = Math.floor(Math.random() * maxCardIdPrismaticEvolutions) + 1;
+                    imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/prismatic-evolutions/en-us/SV8pt5_EN_${cardIdPrismatic}.png`;
+                } else if (collectionChoice < 0.66) {
+                    // Surging Sparks Collection
+                    const cardIdSurgingSparks = Math.floor(Math.random() * maxCardIdSurgingSparks) + 1;
+                    imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/surging-sparks/en-us/SV08_EN_${cardIdSurgingSparks}.png`;
+                } else {
+                    // Stellar Crown Collection
+                    const cardIdStellarCrown = Math.floor(Math.random() * maxCardIdStellarCrown) + 1;
+                    imgUrl = `https://dz3we2x72f7ol.cloudfront.net/expansions/stellar-crown/en-us/SV07_EN_${cardIdStellarCrown}.png`;
+                }
+    
+                imgBack.src = imgUrl;
+                imgBack.alt = "Pokémon Card Back";
+                cardBack.appendChild(imgBack);
+                
+                // Add the front and back to the card
+                cardInner.appendChild(cardFront);
+                cardInner.appendChild(cardBack);
+                cardDiv.appendChild(cardInner);
+                container.appendChild(cardDiv);
+            }
+        }
+    </script>
+    
+</body>
+</html>
