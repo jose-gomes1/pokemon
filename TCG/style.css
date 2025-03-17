@@ -60,4 +60,25 @@ button {
     border-radius: 5px; 
     color: white; 
 }
-  
+.collection-container {
+    margin-top: 20px; /* Adds space between the "Sua Coleção" title and the cards */
+}
+
+.collection-card {
+    margin: 20px; /* Increases space between individual cards */
+    width: 160px;
+    height: 220px;
+    display: inline-block;
+}
+
+.pack {
+    margin-bottom: 30px; /* Adds more space between different packs */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* Increases space between cards */
+}
+
+h2 {
+    margin-bottom: 30px; /* Adds space below the "Sua Coleção" title */
+}
