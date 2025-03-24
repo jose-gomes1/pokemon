@@ -105,11 +105,41 @@ async function viewCollection() {
         return;
     }
 
-    collection.forEach(pack => {
-        const packDiv = document.createElement("div");
-        packDiv.classList.add("pack");
+    // Create a dropdown to select the collection
+    const select = document.createElement("select");
+    select.innerHTML = `<option value="all">Todas as coleções</option>`;
+    collections.forEach(col => {
+        select.innerHTML += `<option value="${col.name}">${col.name}</option>`;
+    });
 
-        pack.forEach(cardUrl => {
+    container.appendChild(select);
+
+    // Create a div to display selected cards
+    const displayArea = document.createElement("div");
+    displayArea.classList.add("collection-container");
+    container.appendChild(displayArea);
+
+    function updateDisplay() {
+        displayArea.innerHTML = ""; // Clear previous cards
+        let selectedCollection = select.value;
+        let filteredCards = collection.flat().filter(cardUrl => {
+            if (selectedCollection === "all") return true;
+            return cardUrl.includes(collections.find(c => c.name === selectedCollection).url);
+        });
+
+        if (filteredCards.length === 0) {
+            displayArea.innerHTML = "<p>Nenhuma carta dessa coleção foi encontrada.</p>";
+            return;
+        }
+
+        let row;
+        filteredCards.forEach((cardUrl, index) => {
+            if (index % 7 === 0) {
+                row = document.createElement("div");
+                row.classList.add("pack");
+                displayArea.appendChild(row);
+            }
+
             let cardDiv = document.createElement("div");
             cardDiv.classList.add("card", "collection-card");
 
@@ -117,10 +147,11 @@ async function viewCollection() {
             img.src = cardUrl;
 
             cardDiv.appendChild(img);
-            packDiv.appendChild(cardDiv);
+            row.appendChild(cardDiv);
         });
+    }
 
-        container.appendChild(packDiv);
-    });
+    select.addEventListener("change", updateDisplay);
+    updateDisplay(); // Display all initially
 }
 
