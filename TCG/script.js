@@ -39,7 +39,7 @@ async function openBooster() {
     const container = document.getElementById("cards-container");
     container.innerHTML = "";
 
-    const numCards = 5;
+    const numCards = 7;
     const openedCards = [];
     const userIP = await fetchIP();
 
@@ -67,7 +67,6 @@ async function openBooster() {
         if (i === numCards - 1) {
             // Last card is always an Energy card
             imgBack.src = energyCards[Math.floor(Math.random() * energyCards.length)];
-            imgBack.alt = "Energy Card";
         } else {
             // Random Pokémon card
             const randomCollection = collections[Math.floor(Math.random() * collections.length)];
