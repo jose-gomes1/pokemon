@@ -23,7 +23,7 @@ const energyCards = [
     "assets/BasicFireEnergySVEEnergy.jpg",
     "assets/BasicWaterEnergySVEEnergy.jpg",
     "assets/BasicLightningEnergySVEEnergy.jpg",
-    "assets/upload/a/a6/BasicPsychicEnergySVEEnergy.jpg",
+    "assets/BasicPsychicEnergySVEEnergy.jpg",
     "assets/BasicFightingEnergySVEEnergy.jpg",
     "assets/BasicDarknessEnergySVEEnergy.jpg",
     "assets/BasicMetalEnergySVEEnergy.jpg"
