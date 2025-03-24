@@ -19,14 +19,14 @@ const collections = [
 ];
 
 const energyCards = [
-    "https://archives.bulbagarden.net/media/upload/f/f0/BasicGrassEnergySVEEnergy1.jpg",
-    "https://archives.bulbagarden.net/media/upload/2/24/BasicFireEnergySVEEnergy2.jpg",
-    "https://archives.bulbagarden.net/media/upload/c/c2/BasicWaterEnergySVEEnergy3.jpg",
-    "https://archives.bulbagarden.net/media/upload/7/7b/BasicLightningEnergySVEEnergy4.jpg",
-    "https://archives.bulbagarden.net/media/upload/a/a6/BasicPsychicEnergySVEEnergy5.jpg",
-    "https://archives.bulbagarden.net/media/upload/8/84/BasicFightingEnergySVEEnergy6.jpg",
-    "https://archives.bulbagarden.net/media/upload/b/ba/BasicDarknessEnergySVEEnergy7.jpg",
-    "https://archives.bulbagarden.net/media/upload/8/82/BasicMetalEnergySVEEnergy8.jpg"
+    "assets/BasicGrassEnergySVEEnergy.jpg",
+    "assets/BasicFireEnergySVEEnergy.jpg",
+    "assets/BasicWaterEnergySVEEnergy.jpg",
+    "assets/BasicLightningEnergySVEEnergy.jpg",
+    "assets/upload/a/a6/BasicPsychicEnergySVEEnergy.jpg",
+    "assets/BasicFightingEnergySVEEnergy.jpg",
+    "assets/BasicDarknessEnergySVEEnergy.jpg",
+    "assets/BasicMetalEnergySVEEnergy.jpg"
 ];
 
 function fetchIP() {
