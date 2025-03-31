@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const collections = [
+    { name: "Journey Together", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/journey-together/en-us/SV09_EN_" },    
     { name: "Prismatic Evolutions", max: 180, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/prismatic-evolutions/en-us/SV8pt5_EN_" },
     { name: "Surging Sparks", max: 252, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/surging-sparks/en-us/SV08_EN_" },
     { name: "Stellar Crown", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/stellar-crown/en-us/SV07_EN_" },
@@ -38,7 +39,6 @@ function fetchIP() {
 async function openBooster() {
     const container = document.getElementById("cards-container");
     container.innerHTML = "";
-
     const numCards = 7;
     const openedCards = [];
     const userIP = await fetchIP();
@@ -51,107 +51,91 @@ async function openBooster() {
         let cardInner = document.createElement("div");
         cardInner.classList.add("card-inner");
 
-        // Card front
         let cardFront = document.createElement("div");
         cardFront.classList.add("card-front");
         let imgFront = document.createElement("img");
         imgFront.src = "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Pokemon_Trading_Card_Game_cardback.jpg/150px-Pokemon_Trading_Card_Game_cardback.jpg";
-        imgFront.alt = "Pokémon Card Front";
         cardFront.appendChild(imgFront);
 
-        // Card back
         let cardBack = document.createElement("div");
         cardBack.classList.add("card-back");
         let imgBack = document.createElement("img");
 
         if (i === numCards - 1) {
-            // Last card is always an Energy card
             imgBack.src = energyCards[Math.floor(Math.random() * energyCards.length)];
         } else {
-            // Random Pokémon card
             const randomCollection = collections[Math.floor(Math.random() * collections.length)];
             const randomCardId = Math.floor(Math.random() * randomCollection.max) + 1;
             imgBack.src = `${randomCollection.url}${randomCardId}.png`;
-            imgBack.alt = "Pokémon Card";
-
-            // Store Pokémon cards only (skip Energy)
-            openedCards.push(imgBack.src);
+            openedCards.push({ collection: randomCollection.name, id: randomCardId, url: imgBack.src });
         }
 
         cardBack.appendChild(imgBack);
-
-        // Append elements
         cardInner.appendChild(cardFront);
         cardInner.appendChild(cardBack);
         cardDiv.appendChild(cardInner);
         container.appendChild(cardDiv);
     }
 
-    // Save Pokémon cards to local storage using IP as key
     let userCollection = JSON.parse(localStorage.getItem(userIP)) || [];
-    userCollection.push(openedCards);
+    userCollection.push(...openedCards);
     localStorage.setItem(userIP, JSON.stringify(userCollection));
 }
 
 async function viewCollection() {
     const userIP = await fetchIP();
     const collection = JSON.parse(localStorage.getItem(userIP)) || [];
-
     const container = document.getElementById("cards-container");
-    container.innerHTML = `<h2 class="collection-container">Sua Coleção</h2>`;
+    container.innerHTML = `<h2 class="collection-container">Your Collection</h2>`;
 
     if (collection.length === 0) {
-        container.innerHTML += "<p>Você ainda não abriu nenhum pacote.</p>";
+        container.innerHTML += "<p>No cards collected yet.</p>";
         return;
     }
 
-    // Create a dropdown to select the collection
     const select = document.createElement("select");
-    select.innerHTML = `<option value="all">Todas as coleções</option>`;
+    select.innerHTML = `<option value="all">All Collections</option>`;
     collections.forEach(col => {
         select.innerHTML += `<option value="${col.name}">${col.name}</option>`;
     });
 
     container.appendChild(select);
-
-    // Create a div to display selected cards
     const displayArea = document.createElement("div");
     displayArea.classList.add("collection-container");
     container.appendChild(displayArea);
 
     function updateDisplay() {
-        displayArea.innerHTML = ""; // Clear previous cards
+        displayArea.innerHTML = "";
         let selectedCollection = select.value;
-        let filteredCards = collection.flat().filter(cardUrl => {
-            if (selectedCollection === "all") return true;
-            return cardUrl.includes(collections.find(c => c.name === selectedCollection).url);
-        });
+        let filteredCollection = selectedCollection === "all" ? collection : collection.filter(c => c.collection === selectedCollection);
 
-        if (filteredCards.length === 0) {
-            displayArea.innerHTML = "<p>Nenhuma carta dessa coleção foi encontrada.</p>";
-            return;
-        }
+        collections.forEach(col => {
+            if (selectedCollection !== "all" && col.name !== selectedCollection) return;
 
-        let row;
-        filteredCards.forEach((cardUrl, index) => {
-            if (index % 7 === 0) {
-                row = document.createElement("div");
-                row.classList.add("pack");
-                displayArea.appendChild(row);
+            let ownedCards = filteredCollection.filter(c => c.collection === col.name).map(c => c.id);
+            for (let i = 1; i <= col.max; i++) {
+                let cardDiv = document.createElement("div");
+                cardDiv.classList.add("card", "collection-card");
+                let img = document.createElement("img");
+
+                if (ownedCards.includes(i)) {
+                    img.src = `${col.url}${i}.png`;
+                } else {
+                    img.src = "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Pokemon_Trading_Card_Game_cardback.jpg/150px-Pokemon_Trading_Card_Game_cardback.jpg"; // Placeholder for missing cards
+                    cardDiv.classList.add("missing-card");
+                }
+
+                cardDiv.onclick = (event) => {
+                    event.stopPropagation();
+                    cardDiv.classList.toggle("expanded");
+                };
+
+                cardDiv.appendChild(img);
+                displayArea.appendChild(cardDiv);
             }
-
-            let cardDiv = document.createElement("div");
-            cardDiv.classList.add("card", "collection-card");
-
-            let img = document.createElement("img");
-            img.src = cardUrl;
-
-            cardDiv.appendChild(img);
-            row.appendChild(cardDiv);
         });
     }
 
     select.addEventListener("change", updateDisplay);
-    updateDisplay(); // Display all initially
+    updateDisplay();
 }
-
