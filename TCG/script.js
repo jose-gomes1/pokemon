@@ -89,14 +89,9 @@ async function viewCollection() {
     const container = document.getElementById("cards-container");
     container.innerHTML = "<h2 class='collection-container'>Your Collection</h2>";
 
-    if (collection.length === 0) {
-        container.innerHTML += "<p>No cards collected yet.</p>";
-        return;
-    }
-
     const select = document.createElement("select");
 
-    // Safe DOM manipulation for select dropdown
+    // Always populate with all collections
     let allOption = document.createElement("option");
     allOption.value = "all";
     allOption.textContent = "All Collections";
@@ -117,17 +112,19 @@ async function viewCollection() {
 
     function updateDisplay() {
         displayArea.innerHTML = "";
-        let selectedCollection = select.value;
-        let filteredCollection = selectedCollection === "all"
-            ? collection
-            : collection.filter(c => c.collection === selectedCollection);
+        const selectedCollection = select.value;
 
         collections.forEach(col => {
             if (selectedCollection !== "all" && col.name !== selectedCollection) return;
 
-            let ownedCards = filteredCollection
+            // Filter only cards from current collection
+            const ownedCards = collection
                 .filter(c => c.collection === col.name)
                 .map(c => c.id);
+
+            const sectionTitle = document.createElement("h3");
+            sectionTitle.textContent = col.name;
+            displayArea.appendChild(sectionTitle);
 
             for (let i = 1; i <= col.max; i++) {
                 let cardDiv = document.createElement("div");
