@@ -1,23 +1,31 @@
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("openBoosterBtn").addEventListener("click", openBooster);
     document.getElementById("viewCollectionBtn").addEventListener("click", viewCollection);
+
+    const setSelector = document.getElementById("setSelector");
+    collections.forEach(col => {
+        const option = document.createElement("option");
+        option.value = col.name;
+        option.textContent = col.name;
+        setSelector.appendChild(option);
+    });
 });
 
 const collections = [
-    { name: "Destined Rivals", max: 244, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/destined-rivals/en-us/SV10_EN_" },    
-    { name: "Journey Together", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/journey-together/en-us/SV09_EN_" },    
-    { name: "Prismatic Evolutions", max: 180, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/prismatic-evolutions/en-us/SV8pt5_EN_" },
-    { name: "Surging Sparks", max: 252, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/surging-sparks/en-us/SV08_EN_" },
-    { name: "Stellar Crown", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/stellar-crown/en-us/SV07_EN_" },
-    { name: "Shrouded Fable", max: 99, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/shrouded-fable/en-us/SV6pt5_EN_" },
-    { name: "Twilight Masquerade", max: 226, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/twilight-masquerade/en-us/SV06_EN_" },
-    { name: "Temporal Forces", max: 218, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/temporal-forces/en-us/SV05_EN_" },
-    { name: "Paldean Fates", max: 239, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/paldean-fates/en-us/SV4pt5_EN_" },
-    { name: "Paradox Rift", max: 259, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/paradox-rift/en-us/SV04_EN_" },
-    { name: "151", max: 204, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/151/en-us/SV3pt5_EN_" },
-    { name: "Obsidian Flames", max: 227, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/obsidian-flames/en-us/SV03_EN_" },
-    { name: "Paldea Evolved", max: 270, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/paldea-evolved/en-us/SV02_EN_" },
-    { name: "Scarlet Violet", max: 252, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/scarlet-violet/en-us/SV01_EN_" }
+    { name: "Destined Rivals", max: 244, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/destined-rivals/en-us/SV10_EN_", rarityThreshold: 183 },
+    { name: "Journey Together", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/journey-together/en-us/SV09_EN_", rarityThreshold: 160 },
+    { name: "Prismatic Evolutions", max: 180, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/prismatic-evolutions/en-us/SV8pt5_EN_", rarityThreshold: 132 },
+    { name: "Surging Sparks", max: 252, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/surging-sparks/en-us/SV08_EN_", rarityThreshold: 160 },
+    { name: "Stellar Crown", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/stellar-crown/en-us/SV07_EN_", rarityThreshold: 143 },
+    { name: "Shrouded Fable", max: 99, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/shrouded-fable/en-us/SV6pt5_EN_", rarityThreshold: 65 },
+    { name: "Twilight Masquerade", max: 226, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/twilight-masquerade/en-us/SV06_EN_", rarityThreshold: 168 },
+    { name: "Temporal Forces", max: 218, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/temporal-forces/en-us/SV05_EN_", rarityThreshold: 163 },
+    { name: "Paldean Fates", max: 239, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/paldean-fates/en-us/SV4pt5_EN_", rarityThreshold: 92 },
+    { name: "Paradox Rift", max: 259, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/paradox-rift/en-us/SV04_EN_", rarityThreshold: 183 },
+    { name: "151", max: 204, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/151/en-us/SV3pt5_EN_", rarityThreshold: 166 },
+    { name: "Obsidian Flames", max: 227, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/obsidian-flames/en-us/SV03_EN_", rarityThreshold: 198 },
+    { name: "Paldea Evolved", max: 270, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/paldea-evolved/en-us/SV02_EN_", rarityThreshold: 194 },
+    { name: "Scarlet Violet", max: 252, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/scarlet-violet/en-us/SV01_EN_", rarityThreshold: 199 }
 ];
 
 const energyCards = [
@@ -44,6 +52,11 @@ async function openBooster() {
     const openedCards = [];
     const userIP = await fetchIP();
 
+    const setName = document.getElementById("setSelector")?.value || "";
+    const selectedCollection = setName
+        ? collections.find(col => col.name === setName)
+        : collections[Math.floor(Math.random() * collections.length)];
+
     for (let i = 0; i < numCards; i++) {
         let cardDiv = document.createElement("div");
         cardDiv.classList.add("card");
@@ -65,10 +78,20 @@ async function openBooster() {
         if (i === numCards - 1) {
             imgBack.src = energyCards[Math.floor(Math.random() * energyCards.length)];
         } else {
-            const randomCollection = collections[Math.floor(Math.random() * collections.length)];
-            const randomCardId = Math.floor(Math.random() * randomCollection.max) + 1;
-            imgBack.src = `${randomCollection.url}${randomCardId}.png`;
-            openedCards.push({ collection: randomCollection.name, id: randomCardId, url: imgBack.src });
+            const { max, rarityThreshold } = selectedCollection;
+            const rareChance = 0.1;
+
+            let randomCardId;
+            if (Math.random() < rareChance && rarityThreshold < max) {
+                const rareMin = rarityThreshold + 1;
+                const rareMax = max;
+                randomCardId = Math.floor(Math.random() * (rareMax - rareMin + 1)) + rareMin;
+            } else {
+                randomCardId = Math.floor(Math.random() * rarityThreshold) + 1;
+            }
+
+            imgBack.src = `${selectedCollection.url}${randomCardId}.png`;
+            openedCards.push({ collection: selectedCollection.name, id: randomCardId, url: imgBack.src });
         }
 
         cardBack.appendChild(imgBack);

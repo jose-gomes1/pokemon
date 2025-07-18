@@ -101,3 +101,14 @@ button {
 h2 {
     margin-bottom: 30px; /* Adds space below the "Sua Coleção" title */
 }
+
+label, #setSelector {
+    display: block;
+    margin: 10px auto;
+    text-align: center;
+}
+
+#setSelector {
+    padding: 5px;
+    font-size: 16px;
+}
