@@ -40,7 +40,7 @@ function fetchIP() {
 async function openBooster() {
     const container = document.getElementById("cards-container");
     container.innerHTML = "";
-    const numCards = 7;
+    const numCards = 10;
     const openedCards = [];
     const userIP = await fetchIP();
 
@@ -87,7 +87,7 @@ async function viewCollection() {
     const userIP = await fetchIP();
     const collection = JSON.parse(localStorage.getItem(userIP)) || [];
     const container = document.getElementById("cards-container");
-    container.innerHTML = `<h2 class="collection-container">Your Collection</h2>`;
+    container.innerHTML = "<h2 class='collection-container'>Your Collection</h2>";
 
     if (collection.length === 0) {
         container.innerHTML += "<p>No cards collected yet.</p>";
@@ -122,7 +122,7 @@ async function viewCollection() {
                 if (ownedCards.includes(i)) {
                     img.src = `${col.url}${i}.png`;
                 } else {
-                    img.src = "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Pokemon_Trading_Card_Game_cardback.jpg/150px-Pokemon_Trading_Card_Game_cardback.jpg"; // Placeholder for missing cards
+                    img.src = "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Pokemon_Trading_Card_Game_cardback.jpg/150px-Pokemon_Trading_Card_Game_cardback.jpg";
                     cardDiv.classList.add("missing-card");
                 }
 
