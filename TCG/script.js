@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const collections = [
+    { name: "Destined Rivals", max: 244, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/destined-rivals/en-us/SV10_EN_" },    
     { name: "Journey Together", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/journey-together/en-us/SV09_EN_" },    
     { name: "Prismatic Evolutions", max: 180, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/prismatic-evolutions/en-us/SV8pt5_EN_" },
     { name: "Surging Sparks", max: 252, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/surging-sparks/en-us/SV08_EN_" },
