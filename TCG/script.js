@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const collections = [
-    { name: "Destined Rivals", max: 244, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/destined-rivals/en-us/SV10_EN_" },
-    { name: "Journey Together", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/journey-together/en-us/SV09_EN_" },
+    { name: "Destined Rivals", max: 244, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/destined-rivals/en-us/SV10_EN_" },    
+    { name: "Journey Together", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/journey-together/en-us/SV09_EN_" },    
     { name: "Prismatic Evolutions", max: 180, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/prismatic-evolutions/en-us/SV8pt5_EN_" },
     { name: "Surging Sparks", max: 252, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/surging-sparks/en-us/SV08_EN_" },
     { name: "Stellar Crown", max: 175, url: "https://dz3we2x72f7ol.cloudfront.net/expansions/stellar-crown/en-us/SV07_EN_" },
@@ -89,43 +89,31 @@ async function viewCollection() {
     const container = document.getElementById("cards-container");
     container.innerHTML = "<h2 class='collection-container'>Your Collection</h2>";
 
+    if (collection.length === 0) {
+        container.innerHTML += "<p>No cards collected yet.</p>";
+        return;
+    }
+
     const select = document.createElement("select");
-
-    // Always populate with all collections
-    let allOption = document.createElement("option");
-    allOption.value = "all";
-    allOption.textContent = "All Collections";
-    select.appendChild(allOption);
-
+    select.innerHTML = `<option value="all">All Collections</option>`;
     collections.forEach(col => {
-        let option = document.createElement("option");
-        option.value = col.name;
-        option.textContent = col.name;
-        select.appendChild(option);
+        select.innerHTML += `<option value="${col.name}">${col.name}</option>`;
     });
 
     container.appendChild(select);
-
     const displayArea = document.createElement("div");
     displayArea.classList.add("collection-container");
     container.appendChild(displayArea);
 
     function updateDisplay() {
         displayArea.innerHTML = "";
-        const selectedCollection = select.value;
+        let selectedCollection = select.value;
+        let filteredCollection = selectedCollection === "all" ? collection : collection.filter(c => c.collection === selectedCollection);
 
         collections.forEach(col => {
             if (selectedCollection !== "all" && col.name !== selectedCollection) return;
 
-            // Filter only cards from current collection
-            const ownedCards = collection
-                .filter(c => c.collection === col.name)
-                .map(c => c.id);
-
-            const sectionTitle = document.createElement("h3");
-            sectionTitle.textContent = col.name;
-            displayArea.appendChild(sectionTitle);
-
+            let ownedCards = filteredCollection.filter(c => c.collection === col.name).map(c => c.id);
             for (let i = 1; i <= col.max; i++) {
                 let cardDiv = document.createElement("div");
                 cardDiv.classList.add("card", "collection-card");
